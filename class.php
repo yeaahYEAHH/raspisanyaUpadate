@@ -11,7 +11,7 @@ class DataJson {
         $json = file_get_contents($this->url);
 
         if(empty($json)){
-            recovery($this->url, $this->url_backup);
+            $this->recovery($this->url, $this->url_backup);
             throw new Exception("Восстановление файла");
         }
 
@@ -80,26 +80,26 @@ class DataJson {
         $this->save($this->url);
     }
 
+
     function recovery($url, $url_backup) {
-    try {
-        $content = file_get_contents($this->url_backup);
-        if ($content === false) {
-            throw new Exception("Не удалось прочитать файл $");
-        }
+        try {
+            $content = file_get_contents($url_backup);
+            if (!$content) {
+                throw new Exception("Не удалось прочитать файл ". $url);
+            }
 
-        $result = file_put_contents($url, $content);
-        if ($result === false) {
-            throw new Exception("Не удалось записать файл $url");
+            $result = file_put_contents($this->url, $content);
+            if (!$result) {
+                throw new Exception("Не удалось записать файл ". $url_backup);
+            }
+
+        } catch (Exception $e) {
+            echo "Ошибка: " . $e->getMessage() . "\n";
         }
-        return true;
-    } catch (Exception $e) {
-        echo "Ошибка: " . $e->getMessage() . "\n";
-        return false;
     }
-}
-
-    function backup(){
-        recovery($this->url_backup, $this->url);
+    
+    function backup() {
+        $this->recovery($this->url_backup, $this->url);
     }
 };
 
