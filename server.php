@@ -3,35 +3,176 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-$scheduleFile = './schedule.json'; 
+$scheduleFile = '/schedule.json'; 
 $scheduleString = file_get_contents($scheduleFile);
 $scheduleData = json_decode($scheduleString, true);
 
-$birthdayFile = './birthday.json'; 
+$birthdayFile = '/birthday.json'; 
 $birthdayString = file_get_contents($birthdayFile);
 $birthdayData = json_decode($birthdayString, true);
 
 class DataJson {
     protected array $data;
+    protected string $url;
+    protected string $url_backup;
 
     function __construct(string $url) {
-        $json = file_get_contents($url);
+        $this->url = "./json/".$url;
+        $this->url_backup = "./backup/".$url;
+        $json = file_get_contents($this->url);
+
+        if(empty($json)){
+            throw new Exception("Восстановите файл");
+            return;
+        }
+
         $this->data = json_decode($json, true);
     }
+
+    protected function save( $url ){
+        $this->data = json_encode($this->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        file_put_contents( $url, $this->data);
+    }
+
 
     function search(string $field, $search) {
         $pattern = '/' . preg_quote($search, '/') . '/ui';
 
-        $result = array_filter($this->data, function ($item) use ($pattern, $field) {
-            return preg_match($pattern, (string) $item[$field]);
+        $result = array_filter($this->data, function ($item) use ($field, $search, $pattern) {
+            return is_integer($search) ? 
+                $item['ID'] === $search : 
+                preg_match($pattern, (string) $item[$field]);
         });
 
-        return $result ? array_values($result) : ['Ничего не найдено'];
+        return $result ? array_values($result) : throw new Exception('Ничего не найдено');
+    }
+
+    function sort(string $field, bool $order = true){
+        usort($this->data, function ($item_a, $item_b) use ($field, $order){
+            $a = $item_a[$field];
+            $b = $item_b[$field];
+
+            if(empty($a) || empty($b)){
+                throw new Exception("Пустые значение");
+            }
+
+            return $order ? $a <=> $b : $b <=> $a;
+        });
+
+        return $this->data;
+    }
+
+    function delete(array $list_ID){
+        if(empty($list_ID)){
+            throw new Exception("Элемент не существует");
+        }
+
+        foreach($list_ID as $ID){
+            unset($this->data[$ID]);
+        }
+
+        $this->data= array_values($this->data);
+
+        for ($i = 0; $i < count($this->data); $i++) {
+            $this->data[$i]['ID'] = $i;
+        }
+
+        $this->save($this->url);
+    }
+
+    function add(object $obj){
+        $obj['ID'] = count($this->data);
+        array_push($rhis->data, $obj);
+        $this->save($this->url);
+    }
+
+    function edit(int $ID, object $obj){
+        $this->data[$ID] = $obj;
+        $this->save($this->url);
+    }
+
+    function backup(){
+        $file = fopen($this->url_backup, "w");
+        $json =  json_encode($this->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        if (!$file) {
+            throw new Exception("Не удалось открыть файл для записи");
+        }
+
+        fwrite($file, $json);
+        fclose($file);
+    }
+
+    function recovery(){
+        $file = fopen($this->url, "w");
+        $loc = file_get_contents($this->$url_backup);
+        print_r($loc);
+        // $json =  json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        // if (!$file) {
+        //     throw new Exception("Не удалось открыть файл для записи");
+        // }
+
+        // fwrite($file, $json);
+        // fclose($file);
     }
 };
 
-$birthday = new DataJson('./birthday.json');
-print_r($birthday->search('Date', '.20'));
+class Birthday extends DataJson{
+
+    function sortDate(string $date, bool $order = true){
+        usort($this->data, function ($a, $b) use ($date) {
+            $a_field = DateTime::createFromFormat('d.m.Y', $a['Date']);
+            $b_field = DateTime::createFromFormat('d.m.Y', $b['Date']);
+            switch ($date){
+                case 'Day': 
+                    $date_a = $a_field->format('d');
+                    $date_b = $b_field->format('d');
+                    break;
+                case 'Month': 
+                    $date_a = $a_field->format('m');
+                    $date_b = $b_field->format('m');
+                    break;
+                case 'Year': 
+                    $date_a = $a_field->format('Y');
+                    $date_b = $b_field->format('Y');
+                    break;
+                default: 
+                    return "Не существеющая дата"; 
+                    break;
+            } 
+
+            return $order ? $date_a <=> $date_b :  $date_b <=> $date_a;
+        });
+
+        return $this->data;
+    }
+}
+
+class Schedule extends DataJson{
+
+    function current(string $time){
+        foreach($this->data as $lesson){
+            if($lesson['timeEnd'] > $time){
+                return $lesson;
+            }
+        }
+    }
+}
+
+
+
+try {
+    $dataJson = new Birthday('birthday.json');
+    $dataJson->recovery();
+} catch (Exception $e) {
+    echo "Ошибка: " . $e->getMessage();
+}
+// $scheduleLDK = new Schedule( .'/scheduleLDK.json');
+
+
+// var_dump($scheduleLDK->current("10:30"));
+
+
+
 
 // Вывод результата
 
