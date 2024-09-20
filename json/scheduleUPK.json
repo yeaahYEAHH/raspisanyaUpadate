@@ -1,0 +1,104 @@
+[
+  {
+    "timeStart": "07:00",
+    "timeEnd": "08:00",
+    "type": "до урока",
+    "ID": 0
+  },
+  {
+    "timeStart": "08:00",
+    "timeEnd": "08:50",
+    "type": "урок",
+    "ID": 1
+  },
+  {
+    "timeStart": "08:50",
+    "timeEnd": "09:00",
+    "type": "перемена",
+    "ID": 2
+  },
+  {
+    "timeStart": "09:00",
+    "timeEnd": "09:50",
+    "type": "урок",
+    "ID": 3
+  },
+  {
+    "timeStart": "09:50",
+    "timeEnd": "10:00",
+    "type": "перемена",
+    "ID": 4
+  },
+  {
+    "timeStart": "10:00",
+    "timeEnd": "10:50",
+    "type": "урок",
+    "ID": 5
+  },
+  {
+    "timeStart": "10:50",
+    "timeEnd": "11:00",
+    "type": "перемена",
+    "ID": 6
+  },
+  {
+    "timeStart": "11:00",
+    "timeEnd": "11:50",
+    "type": "урок",
+    "ID": 7
+  },
+  {
+    "timeStart": "11:50",
+    "timeEnd": "12:00",
+    "type": "перемена",
+    "ID": 8
+  },
+  {
+    "timeStart": "12:00",
+    "timeEnd": "12:50",
+    "type": "урок",
+    "ID": 9
+  },
+  {
+    "timeStart": "12:50",
+    "timeEnd": "13:15",
+    "type": "перемена",
+    "ID": 10
+  },
+  {
+    "ID": 11,
+    "timeStart": "13:15",
+    "timeEnd": "14:05",
+    "type": "урок"
+  },
+  {
+    "timeStart": "14:05",
+    "timeEnd": "14:15",
+    "type": "перемена",
+    "ID": 12
+  },
+  {
+    "timeStart": "14:15",
+    "timeEnd": "15:05",
+    "type": "урок",
+    "ID": 13
+  },
+  {
+    "timeStart": "15:05",
+    "timeEnd": "15:15",
+    "type": "перемена",
+    "ID": 14
+  },
+  {
+    "timeStart": "15:15",
+    "timeEnd": "16:05",
+    "type": "урок",
+    "ID": 15
+  },
+  {
+    "timeStart": "16:05",
+    "timeEnd": "16:15",
+    "type": "перемена",
+    "ID": 16
+  }
+]
