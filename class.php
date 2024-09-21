@@ -41,7 +41,7 @@ class DataJson {
             $a = $item_a[$field];
             $b = $item_b[$field];
 
-            if(empty($a) || empty($b)){
+            if(empty($a) && empty($b)){
                 throw new Exception("Пустые значение");
             }
 
