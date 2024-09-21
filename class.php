@@ -19,8 +19,8 @@ class DataJson {
     }
 
     protected function save( $url ){
-        $this->data = json_encode($this->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        file_put_contents( $url, $this->data);
+        $json = json_encode($this->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        file_put_contents( $url, $json);
     }
 
 
@@ -36,13 +36,13 @@ class DataJson {
         return $result ? array_values($result) : throw new Exception('Ничего не найдено');
     }
 
-    function sort(string $field, bool $order = true){
+    function sort(string $field, bool $order = false){
         usort($this->data, function ($item_a, $item_b) use ($field, $order){
             $a = $item_a[$field];
             $b = $item_b[$field];
 
             if(empty($a) && empty($b)){
-                throw new Exception("Пустые значение");
+                throw new Exception("Пустые или некорректные значения полей '". $field. "' или '". $field. "' не существует");
             }
 
             return $order ? $a <=> $b : $b <=> $a;
@@ -53,13 +53,17 @@ class DataJson {
 
     function delete(array $list_ID){
         if(empty($list_ID)){
-            throw new Exception("Элемент не существует");
+            throw new Exception("Пустое значение");
         }
 
         foreach($list_ID as $ID){
+            if(!isset($this->data[$ID])){
+                throw new Exception("Не существует ID: ". $ID. " в списке или задан неверно type: ". gettype($ID)); 
+            }
+
             unset($this->data[$ID]);
         }
-
+        
         $this->data= array_values($this->data);
 
         for ($i = 0; $i < count($this->data); $i++) {
@@ -104,8 +108,11 @@ class DataJson {
 };
 
 class Birthday extends DataJson{
-
     function sortDate(string $date, bool $order = true){
+        $list = ["Day", "Month", "Year"];
+        if(!in_array($date, $list)){
+            throw new Exception("Не существует <". $date. ">");
+        }
         usort($this->data, function ($a, $b) use ($date) {
             $a_field = DateTime::createFromFormat('d.m.Y', $a['Date']);
             $b_field = DateTime::createFromFormat('d.m.Y', $b['Date']);
@@ -121,9 +128,6 @@ class Birthday extends DataJson{
                 case 'Year': 
                     $date_a = $a_field->format('Y');
                     $date_b = $b_field->format('Y');
-                    break;
-                default: 
-                    return "Не существеющая дата"; 
                     break;
             } 
 
