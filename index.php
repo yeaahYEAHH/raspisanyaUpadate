@@ -3,85 +3,44 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-require('./class.php');
+require ('./class.php');
 
-// try {
-//     $birthday = new Birthday('birthday.json');
-//     $scheduleLDK = new Schedule('scheduleLDK.json');
-//     $scheduleMonday = new Schedule('scheduleMonday.json');
-//     $scheduleUAK = new Schedule('scheduleUAK.json');
-//     $scheduleUPK = new Schedule('scheduleUPK.json');
-
-// } catch (Exception $e) {
-//     echo "Ошибка: " . $e->getMessage();
-// }
-
-
-
-class Request {
-    private $data;
-    private $body;
-
-    function __construct($data) {
-        $this->data = $data;
-    }
-
-    function handleRequest() {
-        switch ($this->method) {
-            case 'GET':
-                return $this->handleGetRequest();
-            case 'POST':
-                return $this->handlePostRequest();
-            case 'PUT':
-                return $this->handlePutRequest();
-            case 'DELETE':
-                return $this->handleDeleteRequest();
-            default:
-                return $this->handleUnknownMethod();
+function getUriKey(array $paths, string $uri): string {
+    foreach ($paths as $path) {
+        if (strpos($uri, $path) !== false) {
+            return $path;
         }
     }
 
-    function handleGetRequest() {
-        return json_encode($this->data->get(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    }
-
+    return 'unknown';
 }
 
+$paths = ['/birthday', '/scheduleMonday', '/scheduleLDK', '/scheduleUAK', '/scheduleUPK'];
 
-switch($_SERVER['REQUEST_URI']){
-    case '/birthday':
-        header('Content-Type: application/json');
-        header('HTTP/1.1 ' . 200);
-        $birthday = new Birthday('birthday.json');
-        $request = new Request($birthday);
-        echo $request->handleGetRequest();
+$key = getUriKey($paths, $_SERVER['REQUEST_URI']);
+
+switch( $key ){
+    case "/birthday":
 
         break;  
-    
-    case '/scheduleLDK':
-        header('Content-Type: application/json');
-        header('HTTP/1.1 ' . 200);
-        echo "scheduleLDK";
-        break;
 
-    case '/scheduleMonday':
-        header('Content-Type: application/json');
-        header('HTTP/1.1 ' . 200);
-        echo "scheduleMonday";
+    case "/scheduleMonday":
+
+        break;  
+
+    case "/scheduleLDK":
 
         break;
-        
-    case '/scheduleUAK':
-        header('Content-Type: application/json');
-        header('HTTP/1.1 ' . 200);
 
-        echo "scheduleUAK";
+    case "/scheduleUAK":
+
+        break;
+
+    case "/scheduleLDK":
+
         break;
         
-    default: 
-        header('Content-Type: application/json');
-        header('HTTP/1.1 ' . 404);
+    case 'unknow': 
+
         break;   
-}
-
-?>
+}?>
