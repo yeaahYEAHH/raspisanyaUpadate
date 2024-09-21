@@ -136,12 +136,14 @@ class Birthday extends DataJson{
 
 class Schedule extends DataJson{
 
-    function current(string $time){
-        foreach($this->data as $lesson){
-            if($lesson['timeEnd'] > $time){
+    function lesson(string $time){
+        foreach($this->data as $lesson){    
+            if($lesson['timeEnd'] > $time && $lesson['timeStart'] <= $time){
                 return $lesson;
             }
         }
+
+        throw new Exception('Ничего не найдено');
     }
 }
 ?>
