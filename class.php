@@ -34,7 +34,7 @@ class Request {
                 if($this->method == "GET"){ 
                     return json_encode($this->current(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                 }else{
-                    return "Метод не поддерживается";
+                    header('HTTP/1.1 405 Method Not Allowed');
                 }
             break;
 
@@ -42,7 +42,7 @@ class Request {
                 if($this->method == "GET"){
                     return json_encode($this->sort(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                 }else{
-                    return "Метод не поддерживается";
+                    header('HTTP/1.1 405 Method Not Allowed');
                 }
             break;
 
@@ -50,7 +50,7 @@ class Request {
                 if($this->method == "GET"){
                     return json_encode($this->search(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                 }else{
-                    return "Метод не поддерживается";
+                 header('HTTP/1.1 405 Method Not Allowed');
                 }
             break;
 
@@ -58,7 +58,7 @@ class Request {
                 if($this->method == "DELETE"){   
                     return $this->delete();
                 }else{
-                    return "Метод не поддерживается";
+                   header('HTTP/1.1 405 Method Not Allowed');
                 }
             break;
 
@@ -66,7 +66,7 @@ class Request {
                 if($this->method == "POST"){
                     return $this->add();
                 }else{
-                    return "Метод не поддерживается";
+                   header('HTTP/1.1 405 Method Not Allowed');
                 }
             break;
 
@@ -74,7 +74,7 @@ class Request {
                 if($this->method == "PUT"){
                     return $this->edit();
                 }else{
-                    return "Метод не поддерживается";
+                    header('HTTP/1.1 405 Method Not Allowed');
                 }
             break;
 
@@ -82,7 +82,7 @@ class Request {
                 if($this->method == "GET"){
                     return $this->recovery();
                 }else{
-                    return "Метод не поддерживается";
+                    header('HTTP/1.1 405 Method Not Allowed');
                 }
             break;
 
@@ -90,7 +90,7 @@ class Request {
                 if($this->method == "GET"){
                     return $this->backup();
                 }else{
-                    return "Метод не поддерживается";
+                    header('HTTP/1.1 405 Method Not Allowed');
                 }
             break;
 
@@ -160,6 +160,7 @@ class Request {
 
             $this->data->delete($list_ID);
 
+            header('HTTP/1.1 ' . 201);
             return "Успешно удалено по ID: " . implode(",",$list_ID);
 
         } catch (Exception $e) {
@@ -179,6 +180,7 @@ class Request {
             $obj_add = json_decode($this->body, true);
             $this->data->add($obj_add);
 
+            header('HTTP/1.1 ' . 201);
             return "Успешно добавлен новый объект";
         }
 
@@ -208,6 +210,7 @@ class Request {
 
             $this->data->edit($obj_edit["ID"], $obj_edit["obj"]);
 
+            header('HTTP/1.1 ' . 201);
             return "Успешно отредактирован объект";
 
         }catch (Exception $e) {
@@ -219,6 +222,7 @@ class Request {
     private function recovery(){
         try {
             $this->data->recovery();
+
             return "Успешно восстановлен";
 
         }catch (Exception $e) {
@@ -230,6 +234,7 @@ class Request {
     private function backup(){
         try {
             $this->data->backup();
+
             return "Успешно сделана резервная копия";
 
         }catch (Exception $e) {
