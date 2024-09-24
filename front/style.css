@@ -1,0 +1,311 @@
+:root {
+	--darkBackgroundColor: #121212;
+	--darkContainerColor: #1B1B1B;
+	--darkItemColor: #2B2B2B;
+	--colorText: #0472D1;
+	--gradientStart: #0360B7;
+	--gradientEnd: #0FEAB4;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./assets/fonts/Montserrat-Regular.ttf');
+    font-weight: 400;
+    font-style: normal;
+}
+
+html, body{
+	width: 100%;
+	height: 100%;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-weight: normal;
+	transition: .3s ease-in-out background-color;
+}
+
+.absoluteLink{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	color: transparent;
+	text-decoration: none;
+	padding: 20px;
+	transition: .3s ;
+	z-index: 9;
+	font-size: 40px;
+	transition: .5s ease-in-out  background-color color;
+}
+
+.absoluteLink:hover{
+	color: #0472D1;
+	background-color: #0FEAB4;
+}
+
+.gradient__text {
+	background: -webkit-linear-gradient(var(--gradientStart), var(--gradientEnd));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.logo{
+	left: 0;
+	top: 10px;
+	position: absolute;
+}
+
+.page {
+	display: flex;
+	background-color: var(--darkBackgroundColor);
+	font-family: "Montserrat", sans-serif;
+	width: 100vw;
+	height: 100vh;
+	align-items: center;
+	overflow: hidden;
+}
+
+
+.container{
+	width: 100%;
+	height: 75%;
+	background-color: var(--darkContainerColor);
+}
+
+.content{
+	display: grid;
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+	padding: 38px 30px;
+	color: var(--colorText);
+	row-gap: 24px;
+	justify-content: center;
+	grid-template-columns: repeat(5, 19%);
+	grid-template-rows: 62% 32%;
+	grid-template-areas:
+			"main main main main main"
+			"link footer footer footer footer";
+}
+
+#first {
+	grid-area: main;
+}
+
+#second {
+	grid-area: link;
+	background-color: transparent;
+}
+
+#third {
+	display: none;
+	justify-content: center;
+	grid-area: footer;
+
+}
+
+.content__item {
+	background-color: var(--darkItemColor);	
+}
+
+.item__container{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 75%;
+	margin: 0 auto;
+}
+
+.item__container > *{
+	text-align: center;
+	width: 50%;
+}
+
+.date{
+	height: 100%;
+}
+
+.date > * {
+	height: 50%;
+}
+
+.date__item{
+	display: flex;
+	gap: 20px;
+}
+
+.date__item  > * {
+	display: flex;
+	align-items: center;
+	width: 50%;
+	height: 100%;
+}
+
+.calendare{
+	justify-content: right;
+}
+
+.candare__form{
+	position: relative;
+	border-radius: 10px;
+	background-color: #0360B7;
+	padding: 12px 8px;
+}
+
+.calendare__list{
+	border-radius: 10px;
+	padding: 2px 4px;
+	background-color: #fff;
+}
+
+.clips{
+	position: absolute;
+	display: flex;
+	justify-content: space-between;
+	width: 27px;
+	top: -8px;
+	left: 50%;
+	transform: translate(-50%);
+}
+
+.clip{
+	display: block;
+	background-color: #000;
+	height: 16px;
+	width: 8px;
+	border-radius: 100px;
+}
+
+.calendare__day{
+	color: #000;
+}
+
+
+.date__text {
+	flex-direction: column;
+	justify-content: center;
+}
+
+.date__text > *{
+	width: 100%;
+}
+
+.date__text > h2{
+	text-align: left;
+}
+
+
+.information{
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.information > *{
+	height: auto;
+	width: 100%;
+}
+
+.information__text{
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+
+.birthday{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.birthday__item{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: 5px;
+}
+
+.birthday__item > h3{
+	position: relative;	
+}
+
+.birthdayhat {
+	position: absolute;
+	top: 1px;
+	right: -8px;
+}
+
+.boom{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.birthday__content{
+	position: relative;
+	width: 1221px;
+	height: 48px;
+	overflow: hidden;
+}
+
+.birthdayName{
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: 0px;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	transition: .3s;
+}
+
+.birthdayName__card{
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	transition: .6s ease-in;
+}
+
+.qrLink > h3 {
+	font-size: 30px;
+}
+
+h1{
+	font-size: 150px;
+}
+
+h2 {
+	font-size: 55px;
+}
+
+h3 {
+	font-size: 40px;
+}
+
+#change{
+	position: absolute;
+	opacity: 0;
+	border: 5px solid var(--darkContainerColor);
+	background-color: var(--darkBackgroundColor);
+	color: #0472D1;
+	padding: 5px;
+	border-radius: 10px;
+	cursor: pointer;
+	top: 25px;
+	right: 25px;
+	font-size: 20px;
+	z-index: 10;
+	outline: none;
+	transition: .2s ease-in;
+}
+
+#change:hover{
+	opacity: 1;
+}
