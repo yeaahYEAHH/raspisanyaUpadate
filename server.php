@@ -1,7 +1,7 @@
 <?php 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Headers: Content-Type, Accept");
 
 require ('./class.php');
 
@@ -13,7 +13,7 @@ switch( $key ){
     case "/birthday":
         $birthday = new Birthday('birthday.json');
         $request = new Request( $_SERVER, $_GET, $birthday, file_get_contents('php://input'));
-        print_r($request->handleRequest());
+        echo($request->handleRequest());
         break;  
 
     case "/scheduleMonday":
@@ -45,4 +45,7 @@ switch( $key ){
         header('HTTP/1.1 ' . 404);
         echo "Страница не существует";
         break;   
-}?>
+}
+
+
+?>
