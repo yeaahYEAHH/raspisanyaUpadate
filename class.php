@@ -35,6 +35,7 @@ class Request {
                     return json_encode($this->current(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                 }else{
                     header('HTTP/1.1 405 Method Not Allowed');
+    
                 }
             break;
 
@@ -411,9 +412,14 @@ class Birthday extends DataJson{
 
 class Schedule extends DataJson{
 
-    function lesson(string $time){
+    function lesson(string $time ){
         foreach($this->data as $lesson){    
             if($lesson['timeEnd'] > $time && $lesson['timeStart'] <= $time){
+                $dateNow = new DateTime(date('H:i'));
+                $dateEnd = new DateTime($lesson['timeEnd']);
+
+                $lesson["duration"] = $dateEnd->getTimestamp() - $dateNow->getTimestamp();
+
                 return $lesson;
             }
         }
