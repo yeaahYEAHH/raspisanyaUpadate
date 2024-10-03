@@ -1,0 +1,122 @@
+[
+    {
+      "timeStart": "07:00",
+      "timeEnd": "08:00",
+      "type": "до урока",
+      "ID": 0
+    },
+    {
+      "timeStart": "08:00",
+      "timeEnd": "08:45",
+      "type": "урок",
+      "ID": 1
+    },
+    {
+      "timeStart": "08:45",
+      "timeEnd": "08:50",
+      "type": "перемена",
+      "ID": 2
+    },
+    {
+      "timeStart": "08:50",
+      "timeEnd": "09:35",
+      "type": "урок",
+      "ID": 3
+    },
+    {
+      "timeStart": "09:35",
+      "timeEnd": "09:45",
+      "type": "перемена",
+      "ID": 4
+    },
+    {
+      "timeStart": "09:45",
+      "timeEnd": "10:30",
+      "type": "урок",
+      "ID": 5
+    },
+    {
+      "timeStart": "10:30",
+      "timeEnd": "10:35",
+      "type": "перемена",
+      "ID": 6
+    },
+    {
+      "timeStart": "10:35",
+      "timeEnd": "11:20",
+      "type": "урок",
+      "ID": 7
+    },
+    {
+      "timeStart": "11:20",
+      "timeEnd": "11:35",
+      "type": "перемена",
+      "ID": 8
+    },
+    {
+      "timeStart": "11:35",
+      "timeEnd": "12:20",
+      "type": "урок",
+      "ID": 9
+    },
+    {
+      "timeStart": "12:20",
+      "timeEnd": "12:25",
+      "type": "перемена",
+      "ID": 10
+    },
+    {
+      "timeStart": "12:25",
+      "timeEnd": "13:10",
+      "type": "урок",
+      "ID": 11
+    },
+    {
+      "timeStart": "13:10",
+      "timeEnd": "13:20",
+      "type": "перемена",
+      "ID": 12
+    },
+    {
+      "timeStart": "13:20",
+      "timeEnd": "14:05",
+      "type": "урок",
+      "ID": 13
+    },
+    {
+      "timeStart": "14:05",
+      "timeEnd": "14:10",
+      "type": "перемена",
+      "ID": 14
+    },
+    {
+      "timeStart": "14:10",
+      "timeEnd": "14:55",
+      "type": "урок",
+      "ID": 15
+    },
+    {
+      "timeStart": "14:55",
+      "timeEnd": "15:00",
+      "type": "перемена",
+      "ID": 16
+    },
+    {
+      "timeStart": "15:00",
+      "timeEnd": "15:45",
+      "type": "урок",
+      "ID": 17
+    },
+    {
+      "timeStart": "15:45",
+      "timeEnd": "15:50",
+      "type": "перемена",
+      "ID": 18
+    },
+    {
+      "timeStart": "15:50",
+      "timeEnd": "16:35",
+      "type": "урок",
+      "ID": 19
+    }
+]

@@ -101,7 +101,6 @@ html, body{
 
 #third {
 	display: none;
-	justify-content: center;
 	grid-area: footer;
 
 }
@@ -249,10 +248,14 @@ html, body{
 }
 
 .birthday__content{
-	position: relative;
-	width: 1221px;
-	height: 48px;
+	font-size: 2.5em;
 	overflow: hidden;
+	text-align: center;
+}
+
+#names{
+	position: relative;
+	transition: 1s ease-in-out;
 }
 
 .birthdayName{
@@ -271,6 +274,10 @@ html, body{
 	gap: 10px;
 	align-items: center;
 	transition: .6s ease-in;
+}
+
+.qrLink{
+	width: 100%;
 }
 
 .qrLink > h3 {
@@ -309,3 +316,5 @@ h3 {
 #change:hover{
 	opacity: 1;
 }
+
+

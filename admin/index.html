@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css" />
+    <title>Авторизация</title>
+  </head>
+  <body>
+    <div class="container-sm d-flex justify-content-center align-items-center">
+      <form method="POST" action="birthday.php" id="auth" class="gap-1 d-flex flex-column">
+        <h5 class="text-center">Авторизация</h5>
+        <input type="text" id="login" name="login" placeholder="Логин" class="form-control" pattern="^[a-zA-Z0-9]+$" required>
+        <input type="password" name="password" placeholder="Пароль" id="floatingPassword"  class="form-control" required>
+        <button type="submit" class="btn btn-primary">Войти</button>
+      </form>
+    </div>
+  </body>
+
+  <style>
+    body{
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .container-sm{
+      height: 100%;
+    }
+
+    #auth{
+      max-width: 400px;
+      max-height: 400px;
+    }
+  </style>
+</html>

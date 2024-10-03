@@ -96,7 +96,7 @@ class Request {
             break;
 
             default:
-                header('Content-Type: application/json');
+                header('Content-Type: application/text');
                 header('HTTP/1.1 ' . 404);
                 echo "Страница не существует";
         }
@@ -105,12 +105,15 @@ class Request {
     private function current() {
         try {
             if($this->data instanceof Schedule){
+                header('Content-Type: application/json');
                 return $this->data->lesson(date('H:i'));
             }
 
+            header('Content-Type: application/json');
             return $this->data->search("Date", date('d.m.'));
             
         } catch (Exception $e) {
+     
             header('HTTP/1.1 ' . 400);
             return "Ошибка: " . $e->getMessage();
         }
@@ -119,11 +122,14 @@ class Request {
     private function search() {
         try {
             if(empty($this->get['field']) || empty($this->get['value'])){
-                return throw new Exception("Поля не заданы");
+                header('Content-Type: application/text');
+                throw new Exception("Поля не заданы");
             }
 
+            header('Content-Type: application/json');
             return $this->data->search($this->get['field'], $this->get['value']);
         } catch (Exception $e) {
+        
             header('HTTP/1.1 ' . 400);
             return "Ошибка: " . $e->getMessage();
         }
@@ -140,12 +146,14 @@ class Request {
             }
 
             if(empty($field)){
-                return throw new Exception("Поля не заданы");
+                header('Content-Type: application/text');
+                throw new Exception("Поля не заданы");
             }
 
             return $this->data->sort($field, $order);
 
         } catch (Exception $e) {
+    
             header('HTTP/1.1 ' . 400);
             return "Ошибка: " . $e->getMessage();
         }
@@ -161,10 +169,12 @@ class Request {
 
             $this->data->delete($list_ID);
 
+            header('Content-Type: application/text');
             header('HTTP/1.1 ' . 201);
             return "Успешно удалено по ID: " . implode(",",$list_ID);
 
         } catch (Exception $e) {
+       
             header('HTTP/1.1 ' . 400);
             return "Ошибка: " . $e->getMessage();
         }
@@ -175,17 +185,20 @@ class Request {
             $check = json_decode($this->body);
             
             if(!is_object($check) || empty(get_object_vars($check))){
-                return throw new Exception("Не объект или пустой объект");
+                header('Content-Type: application/text');
+                throw new Exception("Не объект или пустой объект");
             }
 
             $obj_add = json_decode($this->body, true);
             $this->data->add($obj_add);
 
             header('HTTP/1.1 ' . 201);
+            header('Content-Type: application/text');
             return "Успешно добавлен новый объект";
         }
 
         catch (Exception $e) {
+   
             header('HTTP/1.1 ' . 400);
             return "Ошибка: " . $e->getMessage();
         }
@@ -196,25 +209,30 @@ class Request {
             $check = json_decode($this->body);
             
             if(!is_object($check) || empty(get_object_vars($check))){
-                return throw new Exception("Не объект или пустой объект");
+                header('Content-Type: application/text');
+                throw new Exception("Не объект или пустой объект");
             }
 
             $obj_edit = json_decode($this->body, true);
 
             if(!(isset($obj_edit['obj'], $obj_edit['ID']))){
-                return throw new Exception("Не существуют поля ID или obj");
+                header('Content-Type: application/text');
+                 throw new Exception("Не существуют поля ID или obj");
             }
 
             if(!(is_integer($obj_edit['ID'])) || !(is_array($obj_edit['obj']))){
-                return throw new Exception("Некоректные значения полей ID или obj");
+                header('Content-Type: application/text');
+                 throw new Exception("Некоректные значения полей ID или obj");
             }
 
             $this->data->edit($obj_edit["ID"], $obj_edit["obj"]);
 
             header('HTTP/1.1 ' . 201);
+            header('Content-Type: application/text');
             return "Успешно отредактирован объект";
 
         }catch (Exception $e) {
+       
             header('HTTP/1.1 ' . 400);
             return "Ошибка: " . $e->getMessage();
         }
@@ -224,9 +242,12 @@ class Request {
         try {
             $this->data->recovery();
 
+            header('Content-Type: application/text');
+            header('HTTP/1.1 ' . 201);
             return "Успешно восстановлен";
 
         }catch (Exception $e) {
+      
             header('HTTP/1.1 ' . 400);
             return "Ошибка: " . $e->getMessage();
         }
@@ -236,6 +257,8 @@ class Request {
         try {
             $this->data->backup();
 
+            header('Content-Type: application/text');
+            header('HTTP/1.1 ' . 201);
             return "Успешно сделана резервная копия";
 
         }catch (Exception $e) {
@@ -269,16 +292,19 @@ class DataJson {
 
 
     function search(string $field, $search) {
-        
         $pattern = '/' . preg_quote($search, '/') . '/ui';
-
+    
         $result = array_filter($this->data, function ($item) use ($field, $search, $pattern) {
             return is_integer($search) ? 
                 $item['ID'] === $search : 
                 preg_match($pattern, (string) $item[$field]);
         });
-
-        return $result ? array_values($result) : throw new Exception('Ничего не найдено');
+    
+        if (empty($result)) {
+            throw new Exception('Ничего не найдено');
+        }
+    
+        return array_values($result); 
     }
 
     function sort(string $field, bool $order = false){
@@ -322,7 +348,7 @@ class DataJson {
         $keys2 = array_keys($this->data[0]);
 
         if(!($keys1 == $keys2)){
-            return throw new Exception("Не существует полей в списке \n Поля добавляемого объекта: ". implode( ",",$keys1). " \n Поля существущих объектов: ". implode( ",",$keys2));
+             throw new Exception("Не существует полей в списке \n Поля добавляемого объекта: ". implode( ",",$keys1). " \n Поля существущих объектов: ". implode( ",",$keys2));
         }
 
 
@@ -334,13 +360,20 @@ class DataJson {
 
         if(!isset($this->data[$ID])){
             throw new Exception("Не существует ID: ". $ID. " в списке или задан неверно type: ". gettype($ID)); 
-        }
+        }   
 
         $keys1 = array_keys($obj);
         $keys2 = array_keys($this->data[0]);
 
         if(!($keys1 == $keys2)){
-            return throw new Exception("Не существует полей в списке \n Поля изменяемого объекта: ". implode( ",",$keys1). " \n Поля существущих объектов: ". implode( ",",$keys2));
+             throw new Exception("Не существует полей в списке \n Поля изменяемого объекта: ". implode( ",",$keys1). " \n Поля существущих объектов: ". implode( ",",$keys2));
+        }
+
+        $values = array_values($obj);
+        foreach ($values as $value){
+            if(!($value)){
+                throw new Exception("Пустые поля объекта ".implode( ",",$keys1));
+            }
         }
 
         $this->data[$ID] = $obj;
@@ -351,12 +384,12 @@ class DataJson {
     private function recoveryFile($url, $url_backup) {
         $content = file_get_contents($url_backup);
         if (!$content) {
-            return throw new Exception("Не удалось прочитать файл ". $url);
+             throw new Exception("Не удалось прочитать файл ". $url);
         }
 
         $result = file_put_contents($url, $content);
         if (!$result) {
-            return throw new Exception("Не удалось записать файл ". $url_backup);
+             throw new Exception("Не удалось записать файл ". $url_backup);
         }
     }
     
